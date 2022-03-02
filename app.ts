@@ -4,63 +4,66 @@ const inputTask = <HTMLInputElement>document.querySelector('#new-task')!;
 const incompleteTasksList = document.querySelector('#incomplete-tasks')!;
 const completedTasksList = document.querySelector('#completed-tasks')!;
 
-//Clase que representa una tarea 
-class TodoTask{
-    constructor(public task:string, public isCompleted:boolean){};
+//Clase que representa una tarea
+class TodoTask {
+  constructor(public task: string, public isCompleted: boolean) {}
 }
 
 //Administador de las tareas
-class TaskManager{
-    tasks:TodoTask[] = [];
-    //Método para agregar una tarea
-    addTask(task:string):void{
-        const newTask = new TodoTask(task, false);
-        this.tasks.push(newTask);
-    }
+class TaskManager {
+  tasks: TodoTask[] = [];
+  //Método para agregar una tarea
+  addTask(task: string): void {
+    const newTask = new TodoTask(task, false);
+    this.tasks.push(newTask);
+  }
 }
 
-class HTMLhelper{
-    static createTaskItem(task:TodoTask):HTMLLIElement{
-        const li = document.createElement('li');
-        const input = document.createElement('input');
+class HTMLhelper {
+  static createTaskItem(task: TodoTask): HTMLLIElement {
+    const li = document.createElement('li');
+    const input = document.createElement('input');
 
-        input.addEventListener('change', () => {
-            input.checked ? task.isCompleted = true : null;
-            printTaskHTML();
-        })
+    input.addEventListener('change', () => {
+      input.checked ? (task.isCompleted = true) : null;
+      printTaskHTML();
+    });
 
-        const label = document.createElement('label');
+    const label = document.createElement('label');
 
-        input.type = 'checkbox';
-        label.innerText = task.task;
+    input.type = 'checkbox';
+    label.innerText = task.task;
 
-        li.appendChild(input);
-        li.appendChild(label);
+    li.appendChild(input);
+    li.appendChild(label);
 
-        return li;
-    }
+    return li;
+  }
 
-    static cleanInput(){
-        inputTask.value = '';
-    }
+  static cleanInput() {
+    inputTask.value = '';
+  }
 }
 
 const taskManager = new TaskManager();
 
 //EventListeners
 buttonAddTask.addEventListener('click', () => {
-    // console.log(inputTask.value)
-    taskManager.addTask(inputTask.value);
-    printTaskHTML();
-    HTMLhelper.cleanInput();
-})
+  if (inputTask.value.trim().length < 3) {
+    return alert('La tarea debe tener 3 dígitos o más');
+  }
+  taskManager.addTask(inputTask.value);
+  printTaskHTML();
+  HTMLhelper.cleanInput();
+});
 
+const printTaskHTML = (): void => {
+  completedTasksList.innerHTML = '';
+  incompleteTasksList.innerHTML = '';
 
-const printTaskHTML = ():void => {
-    completedTasksList.innerHTML = '';
-    incompleteTasksList.innerHTML = '';
-
-    taskManager.tasks.forEach(task => {
-        task.isCompleted ? completedTasksList.appendChild(HTMLhelper.createTaskItem(task)) : incompleteTasksList.appendChild(HTMLhelper.createTaskItem(task))
-    })
-}
+  taskManager.tasks.forEach((task) => {
+    task.isCompleted
+      ? completedTasksList.appendChild(HTMLhelper.createTaskItem(task))
+      : incompleteTasksList.appendChild(HTMLhelper.createTaskItem(task));
+  });
+};

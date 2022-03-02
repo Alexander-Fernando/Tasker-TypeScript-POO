@@ -1,16 +1,14 @@
-"use strict";
 //Referencias elementos del DOM
 var buttonAddTask = document.querySelector('#add-task');
 var inputTask = document.querySelector('#new-task');
 var incompleteTasksList = document.querySelector('#incomplete-tasks');
 var completedTasksList = document.querySelector('#completed-tasks');
-//Clase que representa una tarea 
+//Clase que representa una tarea
 var TodoTask = /** @class */ (function () {
     function TodoTask(task, isCompleted) {
         this.task = task;
         this.isCompleted = isCompleted;
     }
-    ;
     return TodoTask;
 }());
 //Administador de las tareas
@@ -32,7 +30,7 @@ var HTMLhelper = /** @class */ (function () {
         var li = document.createElement('li');
         var input = document.createElement('input');
         input.addEventListener('change', function () {
-            input.checked ? task.isCompleted = true : null;
+            input.checked ? (task.isCompleted = true) : null;
             printTaskHTML();
         });
         var label = document.createElement('label');
@@ -50,7 +48,9 @@ var HTMLhelper = /** @class */ (function () {
 var taskManager = new TaskManager();
 //EventListeners
 buttonAddTask.addEventListener('click', function () {
-    // console.log(inputTask.value)
+    if (inputTask.value.trim().length < 3) {
+        return alert('La tarea debe tener 3 dígitos o más');
+    }
     taskManager.addTask(inputTask.value);
     printTaskHTML();
     HTMLhelper.cleanInput();
@@ -59,6 +59,8 @@ var printTaskHTML = function () {
     completedTasksList.innerHTML = '';
     incompleteTasksList.innerHTML = '';
     taskManager.tasks.forEach(function (task) {
-        task.isCompleted ? completedTasksList.appendChild(HTMLhelper.createTaskItem(task)) : incompleteTasksList.appendChild(HTMLhelper.createTaskItem(task));
+        task.isCompleted
+            ? completedTasksList.appendChild(HTMLhelper.createTaskItem(task))
+            : incompleteTasksList.appendChild(HTMLhelper.createTaskItem(task));
     });
 };
