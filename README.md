@@ -11,7 +11,7 @@
   <p align="center">
     Proyecto de práctica Typescript.
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">Ver en línea</a>
+    <a href="https://agitated-hugle-62c377.netlify.app/">Ver en línea</a>
     ·
   </p>
 </div>
